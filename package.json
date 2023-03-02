@@ -1,0 +1,53 @@
+{
+  "name": "@conduit-xyz/hardhat-gcp-kms-signer",
+  "version": "1.1.2",
+  "description": "Sign Hardhat deployment transactions using KMS key",
+  "repository": "github:conduit-xyz/hardhat-gcp-kms-signer",
+  "author": "Conduit XYZ",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "hardhat",
+    "hardhat-plugin"
+  ],
+  "scripts": {
+    "lint:fix": "prettier --write 'src/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
+    "lint": "tslint --config tslint.json --project tsconfig.json",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@rumblefishdev/eth-signer-kms": "^2.1.0",
+    "@types/lodash": "^4.14.172",
+    "asn1.js": "^5.4.1",
+    "bn.js": "^5.2.1",
+    "ethers": "^5.7.2"
+  },
+  "devDependencies": {
+    "@google-cloud/kms": "3.0.1",
+    "@types/chai": "^4.1.7",
+    "@types/fs-extra": "^5.0.4",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^16.18.0",
+    "chai": "^4.2.0",
+    "ethers-gcp-kms-signer": "^1.1.6",
+    "hardhat": "^2.12.3",
+    "mocha": "^7.1.2",
+    "prettier": "2.0.5",
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^4.0.3"
+  }
+}
