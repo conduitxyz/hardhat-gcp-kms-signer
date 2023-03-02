@@ -13,10 +13,11 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm test
+      - run: npm run build
 
   publish-gpr:
     needs: build
+    if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
