@@ -15,9 +15,9 @@ export class KMSSigner extends ProviderWrapperWithChainId {
   public kmsCredentials: GcpKmsSignerCredentials;
   
 
-  constructor(provider: EIP1193Provider, kmsKeyId: string) {
+  constructor(provider: EIP1193Provider, gcpKmsKeyName: string) {
     super(provider);
-    this.kmsCredentials = parseKmsKey(kmsKeyId);
+    this.kmsCredentials = parseKmsKey(gcpKmsKeyName);
     this.kmsSigner = new GcpKmsSigner(this.kmsCredentials);
   }
 
@@ -87,10 +87,10 @@ export class KMSSigner extends ProviderWrapperWithChainId {
   }
 }
 
-function parseKmsKey(kmsKeyId: string): GcpKmsSignerCredentials {  
-  let parts = kmsKeyId.split("/");
-  assert(kmsKeyId, "kmsKeyId is missing.")
-  assert(parts.length === 10, `Incorrect gcp kms key format: ${ kmsKeyId }. ` + 
+function parseKmsKey(gcpKmsKeyName: string): GcpKmsSignerCredentials {  
+  let parts = gcpKmsKeyName.split("/");
+  assert(gcpKmsKeyName, "gcpKmsKeyName is missing.")
+  assert(parts.length === 10, `Incorrect gcp kms key format: ${ gcpKmsKeyName }. ` + 
     `Expected: projects/<projectId>/locations/<locationId>/keyRings/<keyRingId>/cryptoKeys/<keyId>/cryptoKeyVersions/<keyVersion>`);
   return {
     projectId: parts[1], // your project id in gcp

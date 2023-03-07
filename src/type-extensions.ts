@@ -2,23 +2,23 @@ import "hardhat/types/config";
 
 declare module "hardhat/types/config" {
   export interface HttpNetworkUserConfig {
-    kmsKeyId?: string;
+    gcpKmsKeyName?: string;
     minMaxFeePerGas?: string | number;
     minMaxPriorityFeePerGas?: string | number;
   }
 
   export interface HardhatNetworkUserConfig {
-    kmsKeyId?: string;
+    gcpKmsKeyName?: string;
     minMaxFeePerGas?: string | number;
     minMaxPriorityFeePerGas?: string | number;
   }
   export interface HttpNetworkConfig {
-    kmsKeyId?: string;
+    gcpKmsKeyName?: string;
     minMaxFeePerGas?: string | number;
     minMaxPriorityFeePerGas?: string | number;
   }
   export interface HardhatNetworkConfig {
-    kmsKeyId?: string;
+    gcpKmsKeyName?: string;
     minMaxFeePerGas?: string | number;
     minMaxPriorityFeePerGas?: string | number;
   }

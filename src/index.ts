@@ -24,15 +24,15 @@ extendConfig(
         continue;
       }
       const network = userNetworks[networkName]!;
-      if (network.kmsKeyId) {
-        config.networks[networkName].kmsKeyId = network.kmsKeyId;
+      if (network.gcpKmsKeyName) {
+        config.networks[networkName].gcpKmsKeyName = network.gcpKmsKeyName;
       }
     }
   }
 );
 
 extendEnvironment((hre) => {
-  if (hre.network.config.kmsKeyId) {
+  if (hre.network.config.gcpKmsKeyName) {
     const httpNetConfig = hre.network.config as HttpNetworkUserConfig;
     const eip1193Provider = new HttpProvider(
       httpNetConfig.url!,
@@ -43,7 +43,7 @@ extendEnvironment((hre) => {
     let wrappedProvider: EIP1193Provider;
     wrappedProvider = new KMSSigner(
       eip1193Provider,
-      hre.network.config.kmsKeyId
+      hre.network.config.gcpKmsKeyName
     );
     wrappedProvider = new AutomaticGasProvider(
       wrappedProvider,

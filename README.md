@@ -20,7 +20,7 @@ const config: HardhatUserConfig = {
   networks: {
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_KEY}`,
-      kmsKeyId: "YOUR KMS KEY ID"
+      gcpKmsKeyName: "YOUR KMS KEY ID"
     }
   }
 }
@@ -55,7 +55,7 @@ const config: HardhatUserConfig = {
   networks: {
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_KEY}`,
-      kmsKeyId: "YOUR KMS KEY ID",
+      gcpKmsKeyName: "YOUR KMS KEY ID",
       minMaxFeePerGas: 1600000000,
       mixMaxPriorityFeePerGas: 1200000000
     }
