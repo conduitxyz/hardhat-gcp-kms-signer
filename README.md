@@ -1,6 +1,9 @@
-# Hardhat KMS Signer
+# Hardhat Google Cloud KMS Signer
 
 This plugin signs Ethereum transaction using KMS key during deployments.
+
+- Inspired by @rumblefishdev/hardhat-kms-signer
+- Downgraded to work with hardhat@2.9.6
 
 ## Usage
 

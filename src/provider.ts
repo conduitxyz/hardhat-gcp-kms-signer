@@ -32,12 +32,12 @@ export class KMSSigner extends ProviderWrapperWithChainId {
       const baseTx: utils.UnsignedTransaction = {
         chainId: (await this._getChainId()) || undefined,
         data: tx.data,
-        gasLimit: tx.gas,
-        gasPrice: tx.gasPrice,
+        gasLimit: tx.gas?.toString(),
+        gasPrice: tx.gasPrice?.toString(),
         nonce: Number(nonce),
         type: 2,
         to: toHexString(tx.to),
-        value: tx.value,
+        value: tx.value?.toString(),
         maxFeePerGas: tx.maxFeePerGas?.toString(),
         maxPriorityFeePerGas: tx.maxPriorityFeePerGas?.toString(),
       };
@@ -50,6 +50,8 @@ export class KMSSigner extends ProviderWrapperWithChainId {
         delete baseTx.maxFeePerGas;
         delete baseTx.maxPriorityFeePerGas;
       }
+
+      console.log("TX", baseTx);
 
       const unsignedTx = utils.serializeTransaction(baseTx);
       const hash = keccak256(utils.arrayify(unsignedTx));
