@@ -1,6 +1,6 @@
 {
   "name": "@conduitxyz/hardhat-gcp-kms-signer",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Sign Hardhat deployment transactions using KMS key",
   "repository": "github:conduitxyz/hardhat-gcp-kms-signer",
   "author": "Conduit XYZ",
