@@ -45,15 +45,17 @@ extendEnvironment((hre) => {
       eip1193Provider,
       hre.network.config.gcpKmsKeyName
     );
-    wrappedProvider = new AutomaticGasProvider(
-      wrappedProvider,
-      hre.network.config.gasMultiplier
-    );
-    wrappedProvider = new AutomaticGasPriceProvider(
-      wrappedProvider,
-      hre.network.config.minMaxFeePerGas,
-      hre.network.config.minMaxPriorityFeePerGas
-    );
+    if (hre.network.config.minMaxFeePerGas || hre.network.config.minMaxPriorityFeePerGas) {
+      wrappedProvider = new AutomaticGasProvider(
+        wrappedProvider,
+        hre.network.config.gasMultiplier
+      );
+      wrappedProvider = new AutomaticGasPriceProvider(
+        wrappedProvider,
+        hre.network.config.minMaxFeePerGas,
+        hre.network.config.minMaxPriorityFeePerGas
+      );
+    }
     hre.network.provider = new BackwardsCompatibilityProviderAdapter(
       wrappedProvider
     );
