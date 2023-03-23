@@ -1,4 +1,4 @@
-import { GcpKmsSigner, GcpKmsSignerCredentials} from "ethers-gcp-kms-signer";
+import { GcpKmsSigner, GcpKmsSignerCredentials } from "ethers-gcp-kms-signer";
 
 import { BigNumber, utils } from "ethers";
 import { keccak256 } from "ethers/lib/utils";
@@ -13,7 +13,7 @@ import { assert } from "console";
 export class KMSSigner extends ProviderWrapperWithChainId {
   public kmsSigner: GcpKmsSigner;
   public kmsCredentials: GcpKmsSignerCredentials;
-  
+
 
   constructor(provider: EIP1193Provider, gcpKmsKeyName: string) {
     super(provider);
@@ -24,12 +24,13 @@ export class KMSSigner extends ProviderWrapperWithChainId {
   public async request(args: RequestArguments): Promise<unknown> {
     const method = args.method;
     const params = this._getParams(args);
-    const sender = await this._getSender();
+    const sender = await this._getSender()
+
     if (method === "eth_sendTransaction") {
       const [txRequest] = validateParams(params, rpcTransactionRequest);
       const tx = await utils.resolveProperties(txRequest);
       const nonce = tx.nonce ?? (await this._getNonce(sender));
-      const baseTx: utils.UnsignedTransaction = {
+      const baseTx = {
         chainId: (await this._getChainId()) || undefined,
         data: tx.data,
         gasLimit: tx.gas?.toString(),
@@ -51,13 +52,7 @@ export class KMSSigner extends ProviderWrapperWithChainId {
         delete baseTx.maxPriorityFeePerGas;
       }
 
-      console.log("TX", baseTx);
-
-      const unsignedTx = utils.serializeTransaction(baseTx);
-      const hash = keccak256(utils.arrayify(unsignedTx));
-      const sig = await this.kmsSigner.signMessage(hash);
-
-      const rawTx = utils.serializeTransaction(baseTx, sig);
+      const rawTx = await this.kmsSigner.signTransaction(baseTx);
 
       return this._wrappedProvider.request({
         method: "eth_sendRawTransaction",
@@ -87,10 +82,10 @@ export class KMSSigner extends ProviderWrapperWithChainId {
   }
 }
 
-function parseKmsKey(gcpKmsKeyName: string): GcpKmsSignerCredentials {  
+function parseKmsKey(gcpKmsKeyName: string): GcpKmsSignerCredentials {
   let parts = gcpKmsKeyName.split("/");
   assert(gcpKmsKeyName, "gcpKmsKeyName is missing.")
-  assert(parts.length === 10, `Incorrect gcp kms key format: ${ gcpKmsKeyName }. ` + 
+  assert(parts.length === 10, `Incorrect gcp kms key format: ${gcpKmsKeyName}. ` +
     `Expected: projects/<projectId>/locations/<locationId>/keyRings/<keyRingId>/cryptoKeys/<keyId>/cryptoKeyVersions/<keyVersion>`);
   return {
     projectId: parts[1], // your project id in gcp

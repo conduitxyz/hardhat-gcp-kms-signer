@@ -1,6 +1,6 @@
 import { extendConfig, extendEnvironment } from "hardhat/config";
 import { BackwardsCompatibilityProviderAdapter } from "hardhat/internal/core/providers/backwards-compatibility";
-import { AutomaticGasProvider } from "hardhat/internal/core/providers/gas-providers";
+import { AutomaticGasPriceProvider, AutomaticGasProvider, GanacheGasMultiplierProvider } from "hardhat/internal/core/providers/gas-providers";
 import { HttpProvider } from "hardhat/internal/core/providers/http";
 import {
   EIP1193Provider,
@@ -9,7 +9,6 @@ import {
   HttpNetworkUserConfig,
 } from "hardhat/types";
 
-import { AutomaticGasPriceProvider } from "./gasProvider";
 import { KMSSigner } from "./provider";
 import "./type-extensions";
 
@@ -40,22 +39,23 @@ extendEnvironment((hre) => {
       httpNetConfig.httpHeaders,
       httpNetConfig.timeout
     );
-    let wrappedProvider: EIP1193Provider;
+    let wrappedProvider: EIP1193Provider = eip1193Provider;
+    
     wrappedProvider = new KMSSigner(
       eip1193Provider,
       hre.network.config.gcpKmsKeyName
     );
-    if (hre.network.config.minMaxFeePerGas || hre.network.config.minMaxPriorityFeePerGas) {
-      wrappedProvider = new AutomaticGasProvider(
-        wrappedProvider,
-        hre.network.config.gasMultiplier
-      );
-      wrappedProvider = new AutomaticGasPriceProvider(
-        wrappedProvider,
-        hre.network.config.minMaxFeePerGas,
-        hre.network.config.minMaxPriorityFeePerGas
-      );
-    }
+    
+    wrappedProvider = new AutomaticGasProvider(
+      wrappedProvider,
+      hre.network.config.gasMultiplier
+    );
+
+    wrappedProvider = new AutomaticGasPriceProvider(
+      wrappedProvider,
+    );    
+    wrappedProvider = new GanacheGasMultiplierProvider(wrappedProvider);
+    
     hre.network.provider = new BackwardsCompatibilityProviderAdapter(
       wrappedProvider
     );
